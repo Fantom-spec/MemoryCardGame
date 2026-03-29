@@ -1,0 +1,289 @@
+/* ── Reset ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ── Tokens ─────────────────────────────────────────── */
+:root {
+  --bg:        #f0f2f5;
+  --surface:   #ffffff;
+  --ink:       #1a1a2e;
+  --ink-muted: #6b7280;
+  --ink-faint: #9ca3af;
+  --border:    #e5e7eb;
+  --accent:    #3b82f6;
+  --accent-dk: #2563eb;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-mono: "DM Mono", monospace;
+  --ease-out:  cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Base ────────────────────────────────────────────── */
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ──────────────────────────────────────────── */
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  gap: 1rem;
+}
+
+/* ── Title ───────────────────────────────────────────── */
+.title {
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.15rem;
+  color: var(--ink);
+}
+
+/* ── Stats pill ──────────────────────────────────────── */
+.stats {
+  display: flex;
+  gap: 1.25rem;
+  background: var(--surface);
+  padding: 0.55rem 1.25rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+
+.stats span strong {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+}
+
+/* ── Controls ────────────────────────────────────────── */
+.controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.controls button {
+  padding: 8px 18px;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.controls button:hover  { background: #2e2e4a; border-color: #2e2e4a; }
+.controls button:active { transform: scale(0.97); }
+
+.controls button.secondary {
+  background: transparent;
+  color: var(--ink);
+}
+
+.controls button.secondary:hover { background: #f3f4f6; }
+
+/* ── Grid ────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ── Card ────────────────────────────────────────────── */
+.card {
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  perspective: 600px;
+  border-radius: var(--radius-md);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.45s var(--ease-out);
+}
+
+.flipped { transform: rotateY(180deg); }
+
+.face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.front {
+  background: var(--accent);
+  border: 2px solid var(--accent-dk);
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255,255,255,0.04) 10px,
+    rgba(255,255,255,0.04) 20px
+  );
+}
+
+.back {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  transform: rotateY(180deg);
+  font-size: clamp(18px, 3.5vw, 26px);
+  line-height: 1;
+}
+
+.matched .back {
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+}
+
+/* ── Leaderboards ────────────────────────────────────── */
+.leaderboards {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.leaderboard {
+  background: var(--surface);
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  min-width: 160px;
+}
+
+.leaderboard h3 {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-faint);
+  margin: 0 0 10px;
+}
+
+.leaderboard ol {
+  margin: 0;
+  padding: 0 0 0 1.1rem;
+  font-size: 13px;
+  color: var(--ink-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.leaderboard ol li span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-left: 4px;
+}
+
+/* ── Win popup ───────────────────────────────────────── */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+  z-index: 100;
+}
+
+.popup-box {
+  background: var(--surface);
+  padding: 2rem 2.5rem;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  max-width: 320px;
+  width: 90%;
+  animation: slideUp 0.25s var(--ease-out);
+}
+
+.popup-box h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+}
+
+.popup-box p {
+  font-size: 14px;
+  color: var(--ink-muted);
+  margin: 0 0 1.25rem;
+}
+
+.name-input {
+  display: block;
+  width: auto;
+  margin: 0 auto 12px;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink);
+  text-align: center;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.name-input::placeholder { color: var(--ink-faint); }
+
+.name-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* ── Keyframes ───────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes pop {
+  0%   { transform: rotateY(180deg) scale(1);    }
+  50%  { transform: rotateY(180deg) scale(1.08); }
+  100% { transform: rotateY(180deg) scale(1);    }
+}
+
+.matched .inner { animation: pop 0.3s var(--ease-out); }
+
+/* ── Utility ─────────────────────────────────────────── */
+.hidden { display: none !important; }
